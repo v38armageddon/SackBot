@@ -1,7 +1,7 @@
 // Some user friendly sanity checks to cut down on silly support issues
 
 #if !defined(_MSC_VER) || (_MSC_VER < 1929)
-	#error "This template is only for Microsoft Visual C++ 2019 and later. To build a D++ bot in Visual Studio Code, or on any other platform or compiler please use https://github.com/brainboxdotcc/templatebot"
+	#error "This template is only for Microsoft Visual C++ 2019 and later. To build a D++ bot in Visual Studio Code, or on any other platform or compiler please use https://github.com/v38armageddon/SackBot"
 #endif
 
 #if (!defined(_MSVC_LANG) || _MSVC_LANG < 201703L)
