@@ -1,4 +1,4 @@
-# ![SackBot logo]() SackBot
+# ![SackBot logo](Assets/logo.png) SackBot
 Simple Discord bot to make common tasks.
 
 ## Installation
