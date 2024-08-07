@@ -1,16 +1,16 @@
-# Contribute to [NAME_PROJECT_HERE]
-[NAME_PROJECT_HERE] is open to all contributions! You just need to respect the code of conduct.
+# Contribute to SackBot
+SackBot is open to all contributions! You just need to respect the code of conduct.
 
 ## How to contribute?
-You can contribute to [NAME_PROJECT_HERE] several ways:
+You can contribute to SackBot several ways:
 - Software
 - Documentation
 - Translation
 
 ### Software
-What you need to contribute to [NAME_PROJECT_HERE]:
-1. Thing
-2. Thing
+What you need to contribute to SackBot:
+1. Visual Studio 2022 Community with utilities for C++ development.
+2. Knowledge in C++ and D++ (D++ is a library for Discord API)
 
 To contribute:
 1. Fork this repository
