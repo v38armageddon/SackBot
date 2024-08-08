@@ -33,11 +33,9 @@ int main()
         // Wrap command registration in run_once to make sure it doesn't run on every full reconnection
         if (dpp::run_once<struct register_bot_commands>()) {
             std::vector<dpp::slashcommand> commands {
-                { 
-                    "joshua", "Hello, v38armageddon.", bot.me.id 
-                },
                 {
-                    "help", "Get all commands from the bot.", bot.me.id
+                    dpp::slashcommand("joshua", "Hello.", bot.me.id),
+                    dpp::slashcommand("help", "Get all commands from the bot.", bot.me.id)
                 }
             };
 
@@ -48,13 +46,14 @@ int main()
                 std::cout << "SACKBOT: Command Name: " << command.name << std::endl;
                 std::cout << "SACKBOT: Command Description: " << command.description << std::endl;
             }
-        }
+        };
     });
 
     // Handle slash command with the most recent addition to D++ features, coroutines!
     bot.on_slashcommand([](const dpp::slashcommand_t& event) -> dpp::task<void> {
         if (event.command.get_command_name() == "joshua") {
-            co_await event.co_reply("Hello, v38armageddon.");
+            std::string username = event.command.get_issuing_user().username;
+            co_await event.co_reply("Hello, " + username + ".");
         }
         if (event.command.get_command_name() == "help") {
             dpp::embed embed = dpp::embed()
