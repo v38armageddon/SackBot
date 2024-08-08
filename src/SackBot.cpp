@@ -1,10 +1,24 @@
 #include "SackBot.h"
 #include <dpp/dpp.h>
+#include <csignal>
 
 const std::string BOT_TOKEN = "TOKEN"; // Fucking. Unsafe. Method
+volatile std::sig_atomic_t g_signal_received = false;
+
+void signal_handler(int signal)
+{
+	if (signal == SIGINT)
+	{
+		g_signal_received = true;
+	}
+}
+
 
 int main()
 {
+	// Register the signal handler
+	std::signal(SIGINT, signal_handler);
+
 	// Create the bot cluster
 	dpp::cluster bot(BOT_TOKEN);
 
@@ -18,6 +32,9 @@ int main()
 			std::vector<dpp::slashcommand> commands {
 				{ 
 					"joshua", "Hello, v38armageddon.", bot.me.id 
+				},
+				{
+					"help", "Get all commands from the bot.", bot.me.id
 				}
 			};
 
