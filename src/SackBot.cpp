@@ -1,7 +1,6 @@
 #include "SackBot.h"
 #include <dpp/dpp.h>
 #include <csignal>
-#include <ctime>
 
 const std::string BOT_TOKEN = "TOKEN"; // Fucking. Unsafe. Method
 volatile std::sig_atomic_t g_signal_received = false;
@@ -14,14 +13,6 @@ void signal_handler(int signal)
     }
 }
 
-std::string getFormattedDate()
-{
-    std::time_t now = std::time(nullptr);
-    char buffer[80];
-    std::strftime(buffer, sizeof(buffer), "%a %b %e %T %Y", std::localtime(&now));
-    return buffer;
-}
-
 int main()
 {
     std::cout << "SackBot, by v38armageddon.\nInit SIGINIT..." << std::endl;
@@ -29,7 +20,7 @@ int main()
     // Register the signal handler
     std::signal(SIGINT, signal_handler);
 
-    std::cout << "[" +  getFormattedDate() + "] SACKBOT: SIGINT Initialised! Now starting the bot..." << std::endl;
+    std::cout << "SACKBOT: SIGINT Initialised! Now starting the bot..." << std::endl;
 
     // Create the bot cluster
     dpp::cluster bot(BOT_TOKEN);
@@ -54,8 +45,8 @@ int main()
 
             // Print the registered commands
             for (const auto& command : commands) {
-                std::cout << "[" + getFormattedDate() + "] SACKBOT: Command Name: " << command.name << std::endl;
-                std::cout << "[" + getFormattedDate() + "] SACKBOT: Command Description: " << command.description << std::endl;
+                std::cout << "SACKBOT: Command Name: " << command.name << std::endl;
+                std::cout << "SACKBOT: Command Description: " << command.description << std::endl;
             }
         }
     });
@@ -88,7 +79,7 @@ int main()
         co_return;
     });
 
-    std::cout << "[" + getFormattedDate() + "] SACKBOT: Bot started on " << getFormattedDate() << "!" << std::endl;
+    std::cout << "SACKBOT: Bot started!" << std::endl;
 
     // Start the bot
     bot.start(dpp::st_wait);
