@@ -1,26 +1,87 @@
 #include "SackBot.h"
 #include <dpp/dpp.h>
 #include <csignal>
+#include <filesystem>
+#include <iostream>
+#include <cstdlib>
 
-const std::string BOT_TOKEN = "TOKEN"; // Fucking. Unsafe. Method
+std::string BOT_TOKEN; // The token of the bot will define in the TOKEN.conf file
 volatile std::sig_atomic_t g_signal_received = false;
 
-void signal_handler(int signal)
-{
+// Initialize the signal handler for SIGINT
+void signal_handler(int signal) {
     if (signal == SIGINT)
     {
         g_signal_received = true;
     }
 }
 
-int main()
-{
-    std::cout << "SackBot, by v38armageddon.\nInit SIGINIT..." << std::endl;
+// Initialize the token of the bot
+// PS: Do not ask me again to perform with files and directories in C++. C# is really better for that. - Florian
+void initToken() {
+    // Check if the TOKEN.conf file exist
+    std::string filePath;
+#if defined(__linux__)
+    filePath = std::string(getenv("HOME")) + "/.config/SackBot/TOKEN.conf";
+#else
+    filePath = std::string(getenv("APPDATA")) + "\\SackBot\\TOKEN.conf";
+#endif
+    std::filesystem::path tokenFile(filePath);
+
+    if (std::filesystem::exists(tokenFile)) {
+        // We look at the value of TOKEN = [TOKEN] and set as a string
+        std::ifstream TokenFile(tokenFile);
+        std::string line;
+        std::string token;
+        while (std::getline(TokenFile, line)) {
+            if (line.find("TOKEN = ") != std::string::npos) {
+                token = line.substr(line.find("TOKEN = ") + 8);
+                BOT_TOKEN = token;
+                break;
+            }
+        }
+        TokenFile.close();
+		std::cout << "DEBUG: Token: " << token << std::endl; // Uncomment this line to see the token in the console, but use just for debugging.
+    }
+    else {
+		// Create the SackBot directory
+		std::filesystem::create_directories(
+#if defined(__linux__)
+			std::string(getenv("HOME")) + "/.config/SackBot"
+#else
+			std::string(getenv("APPDATA")) + "\\SackBot"
+#endif
+        );
+
+        // Create the config file and return 1 for invalid token.
+        std::ofstream TokenFile(tokenFile); // TokenFile is not the same as tokenFile!
+        TokenFile << "# Here you can set the token of your bot.\n";
+        TokenFile << "# For security reason, DO NOT PUT INTO YOUR C++ FILE!\n";
+        TokenFile << "# Or you will have a very bad day!\n";
+        TokenFile << "TOKEN = [INSERT_TOKEN_HERE]";
+
+		// Close the file and exit the program
+		TokenFile.close();
+
+		std::cout << "ERROR: Bot token not found.\nPlease insert your bot token into the TOKEN.conf file.\n\n" << std::endl;
+		std::cout << "You can find the TOKEN.conf file at: " << filePath << std::endl;
+
+		std::abort();
+    }
+}
+
+int main() {
+    std::cout << "SackBot, by v38armageddon.\nSACKBOT: Init SIGINIT..." << std::endl;
 
     // Register the signal handler
     std::signal(SIGINT, signal_handler);
 
-    std::cout << "SACKBOT: SIGINT Initialised! Now starting the bot..." << std::endl;
+    std::cout << "SACKBOT: SIGINT Initialised!\nSACKBOT: Init TOKEN.conf file..." << std::endl;
+
+    // Init the TOKEN.conf file
+    initToken();
+    
+    std::cout << "SACKBOT: Bot token Initialised!\nSACKBOT: Init the bot, I pass the relay to D++." << std::endl;
 
     // Create the bot cluster
     dpp::cluster bot(BOT_TOKEN);
@@ -50,6 +111,7 @@ int main()
     });
 
     // Handle slash command with the most recent addition to D++ features, coroutines!
+	// TODO: Separate the functions on commands to avoid a big mess.
     bot.on_slashcommand([](const dpp::slashcommand_t& event) -> dpp::task<void> {
         if (event.command.get_command_name() == "joshua") {
             std::string username = event.command.get_issuing_user().username;
@@ -77,8 +139,6 @@ int main()
         }
         co_return;
     });
-
-    std::cout << "SACKBOT: Bot started!" << std::endl;
 
     // Start the bot
     bot.start(dpp::st_wait);
