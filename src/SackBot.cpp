@@ -96,13 +96,18 @@ int main() {
         if (dpp::run_once<struct register_bot_commands>()) {
             std::vector<dpp::slashcommand> commands {
                 {
-                    dpp::slashcommand("joshua", "Hello.", bot.me.id),
+					dpp::slashcommand("about", "Get information about the bot.", bot.me.id),
+					dpp::slashcommand("ban", "MODERATOR: Ban someone.", bot.me.id),
+                    dpp::slashcommand("clear", "MODERATOR: Clear the chat.", bot.me.id),
+                    dpp::slashcommand("dnd", "OWNER: Set the bot to Do Not Disturb.", bot.me.id),
                     dpp::slashcommand("help", "Get all commands from the bot.", bot.me.id),
-                    dpp::slashcommand("about", "Get information about the bot.", bot.me.id),
-                    dpp::slashcommand("clear", "Clear the chat.", bot.me.id),
-                    dpp::slashcommand("dnd", "Set the bot to Do Not Disturb.", bot.me.id),
-                    dpp::slashcommand("idle", "Set the bot to Idle.", bot.me.id),
-                    dpp::slashcommand("online", "Set the bot to Online.", bot.me.id),
+                    dpp::slashcommand("idle", "OWNER: Set the bot to Idle.", bot.me.id),
+                    dpp::slashcommand("joshua", "Hello.", bot.me.id),
+					dpp::slashcommand("kick", "MODERATOR: Kick someone.", bot.me.id),
+					dpp::slashcommand("offline", "OWNER: Set the bot to Offline.", bot.me.id),
+                    dpp::slashcommand("online", "OWNER: Set the bot to Online.", bot.me.id),
+					dpp::slashcommand("serverinfo", "Get information about the current server.", bot.me.id),
+					dpp::slashcommand("update", "See what's new!", bot.me.id)
                 }
             };
 
@@ -119,12 +124,16 @@ int main() {
     // Handle slash command with the most recent addition to D++ features, coroutines!
     bot.on_slashcommand([](const dpp::slashcommand_t& event) -> dpp::task<void> {
         // DPP DOESN'T SUPPORT SWITCH STATEMENT SO IF HELL IS HERE!
-        if (event.command.get_command_name() == "joshua") {
-            Commands::Joshua(event);
-            co_return;
-        }
+		if (event.command.get_command_name() == "about") {
+			Commands::About(event);
+			co_return;
+		}
         if (event.command.get_command_name() == "help") {
             Commands::Help(event);
+            co_return;
+        }
+        if (event.command.get_command_name() == "joshua") {
+            Commands::Joshua(event);
             co_return;
         }
     });

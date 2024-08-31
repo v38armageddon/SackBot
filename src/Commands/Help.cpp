@@ -25,7 +25,7 @@ namespace Commands {
 			.add_field("update", "See what's new!", true)
             .set_footer(
                 dpp::embed_footer()
-                .set_text("SackBot is created by v38armageddon | v0.2")
+                .set_text("SackBot is created by v38armageddon | v0.3")
                 .set_icon("https://cdn.discordapp.com/avatars/1270782508036001895/8f6e97bbe782e2da4a5b5319da553106.webp?size=128")
             )
             .set_timestamp(time(0));
@@ -34,5 +34,6 @@ namespace Commands {
         dpp::message msg = dpp::message(event.command.channel_id, embed);
 
         event.reply(msg);
+		co_return;
     }
 }
