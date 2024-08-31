@@ -18,19 +18,19 @@ void signal_handler(int signal) {
 }
 
 void initToken() {
-    // Check if the TOKEN.conf file exist
+    // Check if the TOKEN.conf file exists
     std::string filePath;
-    char* buf;
-    size_t sz;
 #if defined(__linux__)
-    filePath = std::string(_dupenv_s(&buf, &sz, "HOME") + "/.config/SackBot/TOKEN.conf");
+    filePath = std::string(std::getenv("HOME")) + "/.config/SackBot/TOKEN.conf";
 #else
-    filePath = std::string(_dupenv_s(&buf, &sz, "APPDATA") + "\\SackBot\\TOKEN.conf");
+    filePath = std::string(std::getenv("APPDATA")) + "\\SackBot\\TOKEN.conf";
 #endif
     std::filesystem::path tokenFile(filePath);
 
+    std::cout << filePath << std::endl;
+
     if (std::filesystem::exists(tokenFile)) {
-        // We look at the value of TOKEN = [TOKEN] and set as a string
+        // We look at the value of TOKEN = [TOKEN] and set it as a string
         std::ifstream TokenFile(tokenFile);
         std::string line;
         std::string token;
@@ -42,22 +42,22 @@ void initToken() {
             }
         }
         TokenFile.close();
-        std::cout << "DEBUG: Token: " << token << std::endl; // Uncomment this line to see the token in the console, but use just for debugging.
+        std::cout << "DEBUG: Token: " << token << std::endl; // Uncomment this line to see the token in the console, but use it just for debugging.
     }
     else {
         // Create the SackBot directory
         std::filesystem::create_directories(
 #if defined(__linux__)
-            std::string(_dupenv_s(&buf, &sz, "HOME") + "/.config/SackBot")
+            std::string(std::getenv("HOME")) + "/.config/SackBot"
 #else
-            std::string(_dupenv_s(&buf, &sz, "APPDATA") + "\\SackBot")
+            std::string(std::getenv("APPDATA")) + "\\SackBot"
 #endif
         );
 
-        // Create the config file and return 1 for invalid token.
+        // Create the config file and return 1 for an invalid token.
         std::ofstream TokenFile(tokenFile); // TokenFile is not the same as tokenFile!
         TokenFile << "# Here you can set the token of your bot.\n";
-        TokenFile << "# For security reason, DO NOT PUT INTO YOUR C++ FILE!\n";
+        TokenFile << "# For security reasons, DO NOT PUT INTO YOUR C++ FILE!\n";
         TokenFile << "# Or you will have a very bad day!\n";
         TokenFile << "TOKEN = [INSERT_TOKEN_HERE]";
 
@@ -72,17 +72,17 @@ void initToken() {
 }
 
 int main() {
-    std::cout << "SackBot, by v38armageddon.\nSACKBOT: Init SIGINIT..." << std::endl;
+    std::cout << "SackBot, by v38armageddon.\nSACKBOT: Init SIGINT..." << std::endl;
 
     // Register the signal handler
     std::signal(SIGINT, signal_handler);
 
-    std::cout << "SACKBOT: SIGINT Initialised!\nSACKBOT: Init TOKEN.conf file..." << std::endl;
+    std::cout << "SACKBOT: SIGINT Initialized!\nSACKBOT: Init TOKEN.conf file..." << std::endl;
 
     // Init the TOKEN.conf file
     initToken();
     
-    std::cout << "SACKBOT: Bot token Initialised!\nSACKBOT: Init the bot, I pass the relay to D++." << std::endl;
+    std::cout << "SACKBOT: Bot token Initialized!\nSACKBOT: Init the bot, I pass the relay to D++." << std::endl;
 
     // Create the bot cluster
     dpp::cluster bot(BOT_TOKEN);
@@ -98,11 +98,11 @@ int main() {
                 {
                     dpp::slashcommand("joshua", "Hello.", bot.me.id),
                     dpp::slashcommand("help", "Get all commands from the bot.", bot.me.id),
-					dpp::slashcommand("about", "Get information about the bot.", bot.me.id),
-					dpp::slashcommand("clear", "Clear the chat.", bot.me.id),
-					dpp::slashcommand("dnd", "Set the bot to Do Not Disturb.", bot.me.id),
-					dpp::slashcommand("idle", "Set the bot to Idle.", bot.me.id),
-					dpp::slashcommand("online", "Set the bot to Online.", bot.me.id),
+                    dpp::slashcommand("about", "Get information about the bot.", bot.me.id),
+                    dpp::slashcommand("clear", "Clear the chat.", bot.me.id),
+                    dpp::slashcommand("dnd", "Set the bot to Do Not Disturb.", bot.me.id),
+                    dpp::slashcommand("idle", "Set the bot to Idle.", bot.me.id),
+                    dpp::slashcommand("online", "Set the bot to Online.", bot.me.id),
                 }
             };
 
@@ -117,15 +117,16 @@ int main() {
     });
 
     // Handle slash command with the most recent addition to D++ features, coroutines!
-	// TODO: Separate the functions on commands to avoid a big mess.
     bot.on_slashcommand([](const dpp::slashcommand_t& event) -> dpp::task<void> {
+        // DPP DOESN'T SUPPORT SWITCH STATEMENT SO IF HELL IS HERE!
         if (event.command.get_command_name() == "joshua") {
-			Commands::Joshua(event);
+            Commands::Joshua(event);
+            co_return;
         }
         if (event.command.get_command_name() == "help") {
-			Commands::Help(event);
+            Commands::Help(event);
+            co_return;
         }
-        co_return;
     });
 
     // Start the bot

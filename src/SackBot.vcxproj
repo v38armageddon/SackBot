@@ -147,6 +147,7 @@
       <LanguageStandard>stdcpp20</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <AdditionalOptions>/wd4251 /utf-8 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -283,12 +284,12 @@
     <ClCompile Include="Commands\Dnd.cpp" />
     <ClCompile Include="Commands\Help.cpp" />
     <ClCompile Include="Commands\Idle.cpp" />
+    <ClCompile Include="Commands\Joshua.cpp" />
     <ClCompile Include="Commands\Kick.cpp" />
     <ClCompile Include="Commands\Offline.cpp" />
     <ClCompile Include="Commands\Online.cpp" />
     <ClCompile Include="Commands\ServerInfo.cpp" />
     <ClCompile Include="Commands\Update.cpp" />
-    <ClCompile Include="Joshua.cpp" />
     <ClCompile Include="SackBot.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

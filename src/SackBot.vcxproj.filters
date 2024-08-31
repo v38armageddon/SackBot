@@ -299,9 +299,6 @@
     <ClCompile Include="SackBot.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Joshua.cpp">
-      <Filter>Commands</Filter>
-    </ClCompile>
     <ClCompile Include="Commands\About.cpp">
       <Filter>Commands</Filter>
     </ClCompile>
@@ -333,6 +330,9 @@
       <Filter>Commands</Filter>
     </ClCompile>
     <ClCompile Include="Commands\Update.cpp">
+      <Filter>Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="Commands\Joshua.cpp">
       <Filter>Commands</Filter>
     </ClCompile>
   </ItemGroup>
