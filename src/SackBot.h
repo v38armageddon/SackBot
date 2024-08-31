@@ -1,5 +1,7 @@
-// Some user friendly sanity checks to cut down on silly support issues
+#ifndef SACKBOT_H
+#define SACKBOT_H
 
+// Some user friendly sanity checks to cut down on silly support issues
 #if !defined(_MSC_VER) || (_MSC_VER < 1929)
 	#error "This template is only for Microsoft Visual C++ 2019 and later. To build a D++ bot in Visual Studio Code, or on any other platform or compiler please use https://github.com/v38armageddon/SackBot"
 #endif
@@ -12,5 +14,4 @@
 	#error "You must compile this template using its .sln file. You cannot just double click the .cpp file and compile it on its own. Ensure you checked out the full source code of the template!"
 #endif
 
-// Do not warn about the use of getenv
-#define _CRT_SECURE_NO_WARNINGS
+#endif // SACKBOT_H

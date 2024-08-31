@@ -1,4 +1,5 @@
 #include "SackBot.h"
+#include "Commands/Commands.h"
 #include <dpp/dpp.h>
 #include <csignal>
 #include <filesystem>
@@ -16,15 +17,15 @@ void signal_handler(int signal) {
     }
 }
 
-// Initialize the token of the bot
-// PS: Do not ask me again to perform with files and directories in C++. C# is really better for that. - Florian
 void initToken() {
     // Check if the TOKEN.conf file exist
     std::string filePath;
+    char* buf;
+    size_t sz;
 #if defined(__linux__)
-    filePath = std::string(getenv("HOME")) + "/.config/SackBot/TOKEN.conf";
+    filePath = std::string(_dupenv_s(&buf, &sz, "HOME") + "/.config/SackBot/TOKEN.conf");
 #else
-    filePath = std::string(getenv("APPDATA")) + "\\SackBot\\TOKEN.conf";
+    filePath = std::string(_dupenv_s(&buf, &sz, "APPDATA") + "\\SackBot\\TOKEN.conf");
 #endif
     std::filesystem::path tokenFile(filePath);
 
@@ -41,15 +42,15 @@ void initToken() {
             }
         }
         TokenFile.close();
-		std::cout << "DEBUG: Token: " << token << std::endl; // Uncomment this line to see the token in the console, but use just for debugging.
+        std::cout << "DEBUG: Token: " << token << std::endl; // Uncomment this line to see the token in the console, but use just for debugging.
     }
     else {
-		// Create the SackBot directory
-		std::filesystem::create_directories(
+        // Create the SackBot directory
+        std::filesystem::create_directories(
 #if defined(__linux__)
-			std::string(getenv("HOME")) + "/.config/SackBot"
+            std::string(_dupenv_s(&buf, &sz, "HOME") + "/.config/SackBot")
 #else
-			std::string(getenv("APPDATA")) + "\\SackBot"
+            std::string(_dupenv_s(&buf, &sz, "APPDATA") + "\\SackBot")
 #endif
         );
 
@@ -60,13 +61,13 @@ void initToken() {
         TokenFile << "# Or you will have a very bad day!\n";
         TokenFile << "TOKEN = [INSERT_TOKEN_HERE]";
 
-		// Close the file and exit the program
-		TokenFile.close();
+        // Close the file and exit the program
+        TokenFile.close();
 
-		std::cout << "ERROR: Bot token not found.\nPlease insert your bot token into the TOKEN.conf file.\n\n" << std::endl;
-		std::cout << "You can find the TOKEN.conf file at: " << filePath << std::endl;
+        std::cout << "ERROR: Bot token not found.\nPlease insert your bot token into the TOKEN.conf file.\n\n" << std::endl;
+        std::cout << "You can find the TOKEN.conf file at: " << filePath << std::endl;
 
-		std::abort();
+        std::abort();
     }
 }
 
@@ -96,7 +97,12 @@ int main() {
             std::vector<dpp::slashcommand> commands {
                 {
                     dpp::slashcommand("joshua", "Hello.", bot.me.id),
-                    dpp::slashcommand("help", "Get all commands from the bot.", bot.me.id)
+                    dpp::slashcommand("help", "Get all commands from the bot.", bot.me.id),
+					dpp::slashcommand("about", "Get information about the bot.", bot.me.id),
+					dpp::slashcommand("clear", "Clear the chat.", bot.me.id),
+					dpp::slashcommand("dnd", "Set the bot to Do Not Disturb.", bot.me.id),
+					dpp::slashcommand("idle", "Set the bot to Idle.", bot.me.id),
+					dpp::slashcommand("online", "Set the bot to Online.", bot.me.id),
                 }
             };
 
@@ -114,28 +120,10 @@ int main() {
 	// TODO: Separate the functions on commands to avoid a big mess.
     bot.on_slashcommand([](const dpp::slashcommand_t& event) -> dpp::task<void> {
         if (event.command.get_command_name() == "joshua") {
-            std::string username = event.command.get_issuing_user().username;
-            co_await event.co_reply("Hello, " + username + ".");
+			Commands::Joshua(event);
         }
         if (event.command.get_command_name() == "help") {
-            dpp::embed embed = dpp::embed()
-                .set_color(dpp::colors::dark_blue)
-                .set_title("Help for SackBot")
-                .set_author("v38armageddon", "https://github.com/v38armageddon/SackBot", "https://cdn.discordapp.com/avatars/1270782508036001895/8f6e97bbe782e2da4a5b5319da553106.webp?size=128")
-                .set_description("Here you can find all commands for SackBot.")
-                .set_image("https://cdn.discordapp.com/avatars/1270782508036001895/8f6e97bbe782e2da4a5b5319da553106.webp?size=128")
-                .add_field("joshua", "A simple test command", true)
-                .set_footer(
-                    dpp::embed_footer()
-                    .set_text("SackBot is created by v38armageddon | v0.2")
-                    .set_icon("https://cdn.discordapp.com/avatars/1270782508036001895/8f6e97bbe782e2da4a5b5319da553106.webp?size=128")
-                )
-                .set_timestamp(time(0));
-
-            // Create the message with the embed
-            dpp::message msg = dpp::message(event.command.channel_id, embed);
-
-            event.reply(msg);
+			Commands::Help(event);
         }
         co_return;
     });
