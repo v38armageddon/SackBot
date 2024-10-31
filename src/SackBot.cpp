@@ -136,6 +136,10 @@ int main() {
             Commands::Joshua(event);
             co_return;
         }
+		if (event.command.get_command_name() == "serverinfo") {
+			Commands::ServerInfo(event);
+			co_return;
+		}
     });
 
     // Start the bot
