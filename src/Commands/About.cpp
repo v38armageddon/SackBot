@@ -18,7 +18,7 @@ namespace Commands {
 			.set_footer(
 				dpp::embed_footer()
 				.set_text("Credits to Win's INFO and Win's BOT for the inspiration.")
-				.set_icon("https://cdn.discordapp.com/avatars/1270782508036001895/8f6e97bbe782e2da4a5b5319da553106.webp?size=128")
+				.set_icon("https://cdn.discordapp.com/avatars/755144184335302717/9d3bac2a2799ed153a466f662af179d2.png?size=1024")
 			)
 			.set_timestamp(time(0));
 
