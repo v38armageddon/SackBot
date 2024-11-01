@@ -308,22 +308,10 @@
     <ClCompile Include="Commands\Clear.cpp">
       <Filter>Commands</Filter>
     </ClCompile>
-    <ClCompile Include="Commands\Dnd.cpp">
-      <Filter>Commands</Filter>
-    </ClCompile>
     <ClCompile Include="Commands\Help.cpp">
       <Filter>Commands</Filter>
     </ClCompile>
-    <ClCompile Include="Commands\Idle.cpp">
-      <Filter>Commands</Filter>
-    </ClCompile>
     <ClCompile Include="Commands\Kick.cpp">
-      <Filter>Commands</Filter>
-    </ClCompile>
-    <ClCompile Include="Commands\Offline.cpp">
-      <Filter>Commands</Filter>
-    </ClCompile>
-    <ClCompile Include="Commands\Online.cpp">
       <Filter>Commands</Filter>
     </ClCompile>
     <ClCompile Include="Commands\ServerInfo.cpp">

@@ -7,6 +7,6 @@
 namespace Commands {
 	dpp::task<void> Joshua(const dpp::slashcommand_t& event) {
 		std::string username = event.command.get_issuing_user().username;
-		co_await event.co_reply("Hello, " + username + ".\How about a nice game of chess?");
+		co_await event.co_reply("Hello, " + username + ".\nHow about a nice game of chess?");
 	}
 }

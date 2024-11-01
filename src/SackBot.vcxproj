@@ -282,13 +282,9 @@
     <ClCompile Include="Commands\About.cpp" />
     <ClCompile Include="Commands\Ban.cpp" />
     <ClCompile Include="Commands\Clear.cpp" />
-    <ClCompile Include="Commands\Dnd.cpp" />
     <ClCompile Include="Commands\Help.cpp" />
-    <ClCompile Include="Commands\Idle.cpp" />
     <ClCompile Include="Commands\Joshua.cpp" />
     <ClCompile Include="Commands\Kick.cpp" />
-    <ClCompile Include="Commands\Offline.cpp" />
-    <ClCompile Include="Commands\Online.cpp" />
     <ClCompile Include="Commands\ServerInfo.cpp" />
     <ClCompile Include="Commands\Update.cpp" />
     <ClCompile Include="SackBot.cpp" />
