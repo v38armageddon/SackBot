@@ -127,7 +127,14 @@ int main() {
 			co_return;
 		}
         if (event.command.get_command_name() == "ban") {
-			Commands::Ban(event);
+			// Check if the user has the BAN_MEMBERS permission
+			dpp::role userPerm;
+			if (userPerm.has_ban_members() == false) {
+				dpp::message msg = dpp::message(event.command.channel_id, "You don't have the permission to ban members.");
+				event.reply(msg);
+                co_return;
+			}
+            Commands::Ban(event);
             co_return;
         }
 		if (event.command.get_command_name() == "clear") {
