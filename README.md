@@ -1,5 +1,7 @@
 # ![SackBot logo](Assets/logo.png) SackBot
-Simple Discord bot to make common tasks.
+This is a simple Discord bot that can be used to manage a server.
+
+All commands are inspired by another bot: Win's BOT.
 
 ## Installation
 ### Binaries
