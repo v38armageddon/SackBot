@@ -1,4 +1,9 @@
 # ![SackBot logo](Assets/logo.png) SackBot
+⚠️ This project has reached its end of life and will be no longer maintained!
+Reason: The Discord bot is no longer useful due to the deprecation of the Discord server.
+
+See: https://bsky.app/profile/v38armageddon.net/post/3lribsslfxs23 for more information.
+---------------------------------
 This is a simple Discord bot that can be used to manage a server.
 
 All commands are inspired by another bot: Win's BOT.
