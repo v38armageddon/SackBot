@@ -147,6 +147,8 @@
       <LanguageStandard>stdcpp20</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <AdditionalOptions>/wd4251 /utf-8 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <Optimization>Disabled</Optimization>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -187,6 +189,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Commands\Commands.h" />
     <ClInclude Include="dependencies\include\dpp-10.0\dpp\appcommand.h" />
     <ClInclude Include="dependencies\include\dpp-10.0\dpp\application.h" />
     <ClInclude Include="dependencies\include\dpp-10.0\dpp\auditlog.h" />
@@ -276,6 +279,14 @@
     <ClInclude Include="SackBot.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Commands\About.cpp" />
+    <ClCompile Include="Commands\Ban.cpp" />
+    <ClCompile Include="Commands\Clear.cpp" />
+    <ClCompile Include="Commands\Help.cpp" />
+    <ClCompile Include="Commands\Joshua.cpp" />
+    <ClCompile Include="Commands\Kick.cpp" />
+    <ClCompile Include="Commands\ServerInfo.cpp" />
+    <ClCompile Include="Commands\Update.cpp" />
     <ClCompile Include="SackBot.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

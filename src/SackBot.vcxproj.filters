@@ -25,6 +25,9 @@
     <Filter Include="DPP\nlohmann">
       <UniqueIdentifier>{4e785253-c8f4-4617-bf4a-f3e8a739dc05}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Commands">
+      <UniqueIdentifier>{a8632a4f-7220-4c22-a685-614fbc298593}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="dependencies\include\dpp-10.0\dpp\appcommand.h">
@@ -288,10 +291,37 @@
     <ClInclude Include="SackBot.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Commands\Commands.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SackBot.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Commands\About.cpp">
+      <Filter>Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="Commands\Ban.cpp">
+      <Filter>Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="Commands\Clear.cpp">
+      <Filter>Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="Commands\Help.cpp">
+      <Filter>Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="Commands\Kick.cpp">
+      <Filter>Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="Commands\ServerInfo.cpp">
+      <Filter>Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="Commands\Update.cpp">
+      <Filter>Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="Commands\Joshua.cpp">
+      <Filter>Commands</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
