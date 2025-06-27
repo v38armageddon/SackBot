@@ -94,17 +94,30 @@ int main() {
     bot.on_ready([&bot](const dpp::ready_t& event) {
         // Wrap command registration in run_once to make sure it doesn't run on every full reconnection
         if (dpp::run_once<struct register_bot_commands>()) {
+			// For all commands that need to have specific permissions, we need to create them here
+            dpp::slashcommand banCommand("ban", "MODERATOR: Ban someone.", bot.me.id);
+			dpp::slashcommand clearCommand("clear", "MODERATOR: Clear the chat.", bot.me.id);
+			dpp::slashcommand kickCommand("kick", "MODERATOR: Kick someone.", bot.me.id);
+
+			banCommand.set_default_permissions(dpp::p_ban_members);
+			banCommand.add_option(dpp::command_option(dpp::co_user, "user", "Who is gonna be banned.", true));
+			banCommand.add_option(dpp::command_option(dpp::co_string, "reason", "Why you want to ban this user.", false));
+			clearCommand.set_default_permissions(dpp::p_manage_messages);
+			clearCommand.add_option(dpp::command_option(dpp::co_integer, "amount", "How many messages you want to delete.", true));
+			kickCommand.set_default_permissions(dpp::p_kick_members);
+			kickCommand.add_option(dpp::command_option(dpp::co_user, "user", "Who is gonna be kicked.", true));
+			kickCommand.add_option(dpp::command_option(dpp::co_string, "reason", "Why you want to kick this user.", false));
+
+			// List of commands
             std::vector<dpp::slashcommand> commands {
-                {
-					dpp::slashcommand("about", "Get information about the bot.", bot.me.id),
-					dpp::slashcommand("ban", "MODERATOR: Ban someone.", bot.me.id),
-                    dpp::slashcommand("clear", "MODERATOR: Clear the chat.", bot.me.id),
-                    dpp::slashcommand("help", "Get all commands from the bot.", bot.me.id),
-                    dpp::slashcommand("joshua", "Hello.", bot.me.id),
-					dpp::slashcommand("kick", "MODERATOR: Kick someone.", bot.me.id),
-					dpp::slashcommand("serverinfo", "Get information about the current server.", bot.me.id),
-					dpp::slashcommand("update", "See what's new!", bot.me.id)
-                }
+                dpp::slashcommand("about", "Get information about the bot.", bot.me.id),
+                banCommand,
+                clearCommand,
+                dpp::slashcommand("help", "Get all commands from the bot.", bot.me.id),
+                dpp::slashcommand("joshua", "Hello.", bot.me.id),
+                kickCommand,
+                dpp::slashcommand("serverinfo", "Get information about the current server.", bot.me.id),
+                dpp::slashcommand("update", "See what's new!", bot.me.id),
             };
 
             bot.global_bulk_command_create(commands);
@@ -120,7 +133,7 @@ int main() {
     });
 
     // Handle slash command with the most recent addition to D++ features, coroutines!
-    bot.on_slashcommand([](const dpp::slashcommand_t& event) -> dpp::task<void> {
+    bot.on_slashcommand([&bot](const dpp::slashcommand_t& event) -> dpp::task<void> {
         // DPP DOESN'T SUPPORT SWITCH STATEMENT SO IF HELL IS HERE!
 		if (event.command.get_command_name() == "about") {
 			Commands::About(event);
@@ -128,13 +141,20 @@ int main() {
 		}
         if (event.command.get_command_name() == "ban") {
 			// Check if the user has the BAN_MEMBERS permission
-			dpp::role userPerm;
-			if (userPerm.has_ban_members() == false) {
-				dpp::message msg = dpp::message(event.command.channel_id, "You don't have the permission to ban members.");
-				event.reply(msg);
+            dpp::permission perms = event.command.get_resolved_permission(event.command.usr.id);
+            if (!perms.can(dpp::p_ban_members)) {
+                event.reply("You don't have the required permissions to ban someone!");
                 co_return;
-			}
-            Commands::Ban(event);
+            }
+            else {
+                // Extract the options
+                dpp::snowflake userID = std::get<dpp::snowflake>(event.get_parameter("user"));
+				bot.guild_ban_add(event.command.guild_id, userID, 604800);
+
+				// Call the Ban command
+                //Commands::Ban(event, userID, reason);
+				co_return;
+            }
             co_return;
         }
 		if (event.command.get_command_name() == "clear") {
